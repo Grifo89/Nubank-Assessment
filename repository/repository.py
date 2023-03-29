@@ -1,6 +1,6 @@
 from typing import List
 
-from models import Tax
+from models.models import Tax
 
 
 class TransactionRepository():
