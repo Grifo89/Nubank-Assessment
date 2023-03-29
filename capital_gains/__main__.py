@@ -13,7 +13,6 @@ import controller.cli as cli
 
 def main():
     operations = dp.DataProcessing().get_transactions()
-    print('\nProcessing operation...\n')
     for operation in operations:
         processor = cli.TransactionController()
         processor.processing_transactions(operation)

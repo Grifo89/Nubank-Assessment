@@ -12,16 +12,6 @@ class TransactionRepository():
     taxes (List[float]): A list of taxes paid on transactions.
     current_buy_price (float): The current buying price of the asset.
     lost_profit (float): The current amount of lost profit due to sell transactions.
-
-    Methods:
-    set_current_quantity(value: int) -> None: Sets the current quantity of assets held.
-    get_current_quantity() -> int: Returns the current quantity of assets held.
-    set_taxes(tax: float) -> None: Sets the tax paid on a transaction.
-    get_taxes() -> List[Tax]: Returns a list of taxes paid on transactions.
-    set_current_buy_price(value: float) -> None: Sets the current buying price of the asset.
-    get_current_buy_price() -> float: Returns the current buying price of the asset.
-    set_lost_profit(lost: float) -> None: Adjusts the lost profit due to sell transactions.
-    get_lost_profit() -> float: Returns the current amount of lost profit due to sell transactions.
     """
     def __init__(self) -> None:
         self.current_quantity_tracker: int = 0

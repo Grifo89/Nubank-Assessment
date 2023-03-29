@@ -19,7 +19,7 @@ class DataProcessing():
         Exception: If the input is not a valid JSON array.
         """
         try:
-            print("\nEnter/Paste your transactions, press enter and Ctrl-D to process them.\n")
+            print("\nEnter/Paste your transactions. Press Enter and Ctrl-D to process them.\n")
             lines = sys.stdin.readlines()
             for transaction in lines:
                 transaction_data = json.loads(transaction.strip())
