@@ -1,22 +1,14 @@
 from typing import List
 
+import pytest
+
 from repository.repository import TransactionRepository
 from models.models import Transaction, Tax
 
 
-class TransactionController:
-    """
-    A class that handles transactions for a particular asset.
-    """
-
-    # class variable
+class TestIntegration:
     tax_rate = 0.20
-
-    def __init__(self) -> None:
-        """
-        Initializes a new instance of the TransactionController class.
-        """
-        self.repository = TransactionRepository()
+    repository = TransactionRepository()
 
     def _new_buy_price(self, transaction: Transaction) -> None:
         """
@@ -37,7 +29,6 @@ class TransactionController:
             transaction["quantity"] * transaction["unit-cost"]
         )
         weighted_price = round((numerator / denominator), 2)
-        print(f"WIGHTED_PRICE ${weighted_price}")
         self.repository.set_current_buy_price(weighted_price)
 
     def _buy(self, transaction: Transaction) -> None:
@@ -89,7 +80,6 @@ class TransactionController:
         lost_profit = self.repository.get_lost_profit()
         self.repository.set_lost_profit(profit)
         total_profit = profit + lost_profit
-        print(f"LOST_PROFIT ${lost_profit}, TOTAL_PROFIT ${total_profit}")
         if operation_amount > 20000 and total_profit > 0:
             return total_profit * self.tax_rate
         else:
@@ -110,7 +100,36 @@ class TransactionController:
         profit = (transaction["unit-cost"] - buy_price) * transaction["quantity"]
         return round(profit, 2)
 
-    def processing_transactions(self, transactions: List[Transaction]) -> List[Tax]:
+    @pytest.mark.parametrize(
+        "transactions, expected",
+        [
+            (
+                [
+                    {"operation": "buy", "unit-cost": 5000.00, "quantity": 10},
+                    {"operation": "sell", "unit-cost": 4000.00, "quantity": 5},
+                    {"operation": "buy", "unit-cost": 15000.00, "quantity": 5},
+                    {"operation": "buy", "unit-cost": 4000.00, "quantity": 2},
+                    {"operation": "buy", "unit-cost": 23000.00, "quantity": 2},
+                    {"operation": "sell", "unit-cost": 20000.00, "quantity": 1},
+                    {"operation": "sell", "unit-cost": 12000.00, "quantity": 10},
+                    {"operation": "sell", "unit-cost": 15000.00, "quantity": 3},
+                ],
+                [
+                    {"tax": 0},
+                    {"tax": 0},
+                    {"tax": 0},
+                    {"tax": 0},
+                    {"tax": 0},
+                    {"tax": 0},
+                    {"tax": 2000},
+                    {"tax": 2400},
+                ],
+            )
+        ],
+    )
+    def test_processing_transactions(
+        self, transactions: List[Transaction], expected: List[Tax]
+    ) -> None:
         """
         Process a list of transactions and return the corresponding taxes.
 
@@ -129,4 +148,4 @@ class TransactionController:
                 case _:
                     raise Exception("Invalid transation")
         taxes = self.repository.get_taxes()
-        print(taxes, "\n")
+        assert taxes == expected

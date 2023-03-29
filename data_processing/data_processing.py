@@ -1,6 +1,8 @@
 import json, sys
 from typing import List, Any
 
+from models.models import Transaction
+
 
 class DataProcessing:
     """
@@ -11,7 +13,7 @@ class DataProcessing:
     """
 
     def __init__(self):
-        self.transactions: List[Any] = []
+        self.transactions: List[Transaction] = []
 
     def _stdin(self) -> None:
         """
@@ -31,7 +33,7 @@ class DataProcessing:
         except json.JSONDecodeError:
             print("\nThere was an Error. Please enter a valid JSON array\n")
 
-    def get_transactions(self) -> List[Any]:
+    def get_transactions(self) -> List[Transaction]:
         """
         Gets the list of transactions processed by the class.
 
