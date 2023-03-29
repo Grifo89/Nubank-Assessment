@@ -1,7 +1,7 @@
 from typing import List
 
-from repository import TransactionRepository
-from models import Transaction, Tax
+from capital_gains.repository import TransactionRepository
+from capital_gains.models import Transaction, Tax
 
 
 class TransactionController():

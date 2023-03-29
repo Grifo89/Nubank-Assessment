@@ -1,7 +1,5 @@
 venv/
 tmp_venv/
 .pytest_cache
-test.txt
 */__pycache__*
 __pycache__/
-capital_gains/__pycache__/
