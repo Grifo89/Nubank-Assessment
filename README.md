@@ -1,7 +1,7 @@
 Capital Gains 🤑 💸 CLI Application
 ============
 
-This is a CLI application capable of processing stock operations and calculates the taxes over the operation. This is an assesment proposed by Nubank. 
+This is a CLI application capable of processing stock operations and calculates the taxes over the transactions. This is an assesment proposed by Nubank. 
 
 ---
 ## Requirements
@@ -30,17 +30,17 @@ In order to get up and running the application you should:
 
 Once you have the needed setup, you can start using the application. 
 
-Being at the root directory, the application runs typing the following command `python capital_gains`, after typing the command there are two options you can going through:
+Being at the root directory, the application runs typing the following command `python capital_gains`, after typing the command there are two options on wich you can choose:
 
-1. You can press Enter and get into the console interactive mode, where you can pass in the stock operation, which is made up of many transaction. When you finish to do it press `Enter` and `Ctrl + d` execute the progam. 
+1. You can press Enter and get into the console interactive mode, where you can pass in the stock operation, which is made up of many transaction. When you finish to do it press `Enter` and `Ctrl + d` to execute the progam. 
 
 2. You can, after typing the command, redirect a file to the application as an input using **input redirection** `python capital_gains < test.txt`
 
 ### Input Example
 
-Each operation is made by many tansactions. The application can process several operations as an input. 
+Each operation is made by many transactions. The application can process several operations as an input. 
 
-The input should contain a operation per line.
+The input should have a operation per line.
 
 Operation Input Data
 > `[{"operation":"buy", "unit-cost":10.00, "quantity": 10000},{"operation":"sell", "unit-cost":20.00, "quantity": 5000}]`

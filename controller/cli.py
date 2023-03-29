@@ -37,7 +37,6 @@ class TransactionController:
             transaction["quantity"] * transaction["unit-cost"]
         )
         weighted_price = round((numerator / denominator), 2)
-        print(f"WIGHTED_PRICE ${weighted_price}")
         self.repository.set_current_buy_price(weighted_price)
 
     def _buy(self, transaction: Transaction) -> None:
@@ -89,7 +88,6 @@ class TransactionController:
         lost_profit = self.repository.get_lost_profit()
         self.repository.set_lost_profit(profit)
         total_profit = profit + lost_profit
-        print(f"LOST_PROFIT ${lost_profit}, TOTAL_PROFIT ${total_profit}")
         if operation_amount > 20000 and total_profit > 0:
             return total_profit * self.tax_rate
         else:
