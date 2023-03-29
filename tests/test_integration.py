@@ -10,6 +10,7 @@ class TestIntegration:
     tax_rate = 0.20
     repository = TransactionRepository()
 
+
     def _new_buy_price(self, transaction: Transaction) -> None:
         """
         Calculates the new weighted buy price based on a new buy transaction.
@@ -100,38 +101,25 @@ class TestIntegration:
         profit = (transaction["unit-cost"] - buy_price) * transaction["quantity"]
         return round(profit, 2)
 
-    @pytest.mark.parametrize(
-        "transactions, expected",
-        [
-            (
-                [
-                    {"operation": "buy", "unit-cost": 5000.00, "quantity": 10},
-                    {"operation": "sell", "unit-cost": 4000.00, "quantity": 5},
-                    {"operation": "buy", "unit-cost": 15000.00, "quantity": 5},
-                    {"operation": "buy", "unit-cost": 4000.00, "quantity": 2},
-                    {"operation": "buy", "unit-cost": 23000.00, "quantity": 2},
-                    {"operation": "sell", "unit-cost": 20000.00, "quantity": 1},
-                    {"operation": "sell", "unit-cost": 12000.00, "quantity": 10},
-                    {"operation": "sell", "unit-cost": 15000.00, "quantity": 3},
-                ],
-                [
-                    {"tax": 0},
-                    {"tax": 0},
-                    {"tax": 0},
-                    {"tax": 0},
-                    {"tax": 0},
-                    {"tax": 0},
-                    {"tax": 2000},
-                    {"tax": 2400},
-                ],
-            )
-        ],
-    )
-    def test_processing_transactions(
-        self, transactions: List[Transaction], expected: List[Tax]
-    ) -> None:
+    @pytest.mark.parametrize('transactions, expected',
+                                [
+                                    (
+                                        [{"operation":"buy", "unit-cost": 5000.00, "quantity": 10},
+                                        {"operation":"sell", "unit-cost": 4000.00, "quantity": 5},
+                                        {"operation":"buy", "unit-cost": 15000.00, "quantity": 5},
+                                        {"operation":"buy", "unit-cost": 4000.00, "quantity": 2},
+                                        {"operation":"buy", "unit-cost": 23000.00, "quantity": 2},
+                                        {"operation":"sell", "unit-cost": 20000.00, "quantity": 1},
+                                        {"operation":"sell", "unit-cost": 12000.00, "quantity": 10},
+                                        {"operation":"sell", "unit-cost": 15000.00, "quantity": 3}],
+                                        [{"tax":0},{"tax":0},{"tax":0},{"tax":0},{"tax":0},{"tax":0},{"tax":2000},{"tax":2400}]
+                                    )
+                                ]
+                             )
+    def test_processing_transactions(self, transactions: List[Transaction],
+                                expected: List[Tax]) -> None:
         """
-        Process a list of transactions and return the corresponding taxes.
+        Tests the processing of a list of transactions and return the corresponding taxes.
 
         Parameters:
         transactions (List[Transaction]): A list of transactions to be processed.
