@@ -3,7 +3,7 @@ from typing import List
 from models.models import Tax
 
 
-class TransactionRepository():
+class TransactionRepository:
     """
     A repository for tracking transaction data.
 
@@ -13,6 +13,7 @@ class TransactionRepository():
     current_buy_price (float): The current buying price of the asset.
     lost_profit (float): The current amount of lost profit due to sell transactions.
     """
+
     def __init__(self) -> None:
         self.current_quantity_tracker: int = 0
         self.taxes: List[float] = []
@@ -27,8 +28,8 @@ class TransactionRepository():
         value (int): The new value of the current quantity.
         """
         self.current_quantity_tracker += value
-        
-    def get_current_quantity(self) -> None:
+
+    def get_current_quantity(self) -> int:
         """
         Get the current quantity of assets held.
 
@@ -53,8 +54,8 @@ class TransactionRepository():
         Returns:
         List[Tax]: A list of taxes paid on transactions.
         """
-        return [{'tax': x} for x in self.taxes]
-    
+        return [{"tax": x} for x in self.taxes]
+
     def set_current_buy_price(self, value: float) -> None:
         """
         Set the current buying price of the asset.
@@ -72,7 +73,7 @@ class TransactionRepository():
         float: The current buying price of the asset.
         """
         return self.current_buy_price
-    
+
     def set_lost_profit(self, lost: float) -> None:
         """
         Adjust the lost profit due to sell transactions.
@@ -93,4 +94,3 @@ class TransactionRepository():
         float: The current amount of lost profit due to sell transactions.
         """
         return self.lost_profit
-    

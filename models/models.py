@@ -1,9 +1,10 @@
 from enum import Enum
 from typing import NamedTuple
 
+
 class TransactionOperation(Enum):
-    BUY = 'buy'
-    SELL = 'sell'
+    BUY = "buy"
+    SELL = "sell"
 
 
 class Transaction(NamedTuple):
@@ -15,9 +16,11 @@ class Transaction(NamedTuple):
     unit_cost (float): The cost of one unit of the asset in the transaction.
     quantity (int): The quantity of units of the asset in the transaction.
     """
+
     operation: TransactionOperation
     unit_cost: float
     quantity: int
+
 
 class Tax(NamedTuple):
     """
@@ -26,4 +29,5 @@ class Tax(NamedTuple):
     Attributes:
     tax (float): The amount of tax paid on the transaction.
     """
+
     tax: float

@@ -4,7 +4,7 @@ from repository.repository import TransactionRepository
 from models.models import Transaction, Tax
 
 
-class TransactionController():
+class TransactionController:
     """
     A class that handles transactions for a particular asset.
     """
@@ -32,9 +32,11 @@ class TransactionController():
         numerator = 0
         current_quantity = self.repository.get_current_quantity()
         weighted_price = self.repository.get_current_buy_price()
-        denominator = current_quantity + transaction['quantity']
-        numerator = (current_quantity * weighted_price) + (transaction['quantity'] * transaction['unit-cost'])
-        weighted_price = round((numerator/denominator), 2)
+        denominator = current_quantity + transaction["quantity"]
+        numerator = (current_quantity * weighted_price) + (
+            transaction["quantity"] * transaction["unit-cost"]
+        )
+        weighted_price = round((numerator / denominator), 2)
         self.repository.set_current_buy_price(weighted_price)
 
     def _buy(self, transaction: Transaction) -> None:
@@ -48,11 +50,10 @@ class TransactionController():
         Returns:
             None.
         """
-        quantity = transaction['quantity']
+        quantity = transaction["quantity"]
         self._new_buy_price(transaction)
         self.repository.set_current_quantity(quantity)
         self.repository.set_taxes(0)
-        
 
     def _sell(self, transaction: Transaction) -> None:
         """
@@ -65,8 +66,8 @@ class TransactionController():
         Returns:
             None.
         """
-        quantity = transaction['quantity']
-        operation_amount = transaction['quantity'] * transaction['unit-cost']
+        quantity = transaction["quantity"]
+        operation_amount = transaction["quantity"] * transaction["unit-cost"]
         self.repository.set_current_quantity(-quantity)
         profit = self._profit_calculator(transaction)
         tax = self._tax_calculator(profit, operation_amount)
@@ -88,9 +89,9 @@ class TransactionController():
         self.repository.set_lost_profit(profit)
         total_profit = profit + lost_profit
         if operation_amount > 20000 and total_profit > 0:
-           return total_profit * self.tax_rate
+            return total_profit * self.tax_rate
         else:
-           return 0
+            return 0
 
     def _profit_calculator(self, transaction: Transaction) -> float:
         """
@@ -104,11 +105,10 @@ class TransactionController():
             float: The profit of the sell transaction.
         """
         buy_price = self.repository.get_current_buy_price()
-        profit = (transaction['unit-cost'] - buy_price) * transaction['quantity']
+        profit = (transaction["unit-cost"] - buy_price) * transaction["quantity"]
         return round(profit, 2)
 
-    def processing_transactions(self, 
-            transactions: List[Transaction]) -> List[Tax]:
+    def processing_transactions(self, transactions: List[Transaction]) -> List[Tax]:
         """
         Process a list of transactions and return the corresponding taxes.
 
@@ -119,12 +119,12 @@ class TransactionController():
         List[Tax]: A list of taxes corresponding to the processed transactions.
         """
         for transaction in transactions:
-            match transaction['operation']:
-                case 'buy':
+            match transaction["operation"]:
+                case "buy":
                     self._buy(transaction)
-                case 'sell':
+                case "sell":
                     self._sell(transaction)
                 case _:
                     raise Exception("Invalid transation")
         taxes = self.repository.get_taxes()
-        print(taxes,"\n")
+        print(taxes, "\n")
