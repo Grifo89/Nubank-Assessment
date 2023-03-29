@@ -1,5 +1,6 @@
-from capital_gains.repository import TransactionRepository
+from capital_gains.capital_gains.repository import TransactionRepository
 import pytest
+
 
 class TestRepository:
     """

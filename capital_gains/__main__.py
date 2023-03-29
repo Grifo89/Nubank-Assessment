@@ -1,5 +1,6 @@
-from capital_gains.data_processing import DataProcessing
-from capital_gains.cli import TransactionController
+from data_processing import DataProcessing
+from cli import TransactionController
+
 
 def main():
     operations = DataProcessing().get_transactions()
