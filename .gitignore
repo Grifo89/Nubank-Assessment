@@ -4,3 +4,4 @@ tmp_venv/
 test.txt
 */__pycache__*
 __pycache__/
+capital_gains/__pycache__/
