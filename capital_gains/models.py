@@ -1,7 +1,12 @@
-from pydantic import BaseModel, Field
+from enum import Enum
+from typing import NamedTuple
+
+class TransactionOperation(Enum):
+    BUY = 'buy'
+    SELL = 'sell'
 
 
-class Transaction(BaseModel):
+class Transaction(NamedTuple):
     """
     A class representing a financial transaction.
 
@@ -10,11 +15,11 @@ class Transaction(BaseModel):
     unit_cost (float): The cost of one unit of the asset in the transaction.
     quantity (int): The quantity of units of the asset in the transaction.
     """
-    operation: str
-    unit_cost: float = Field(alias="unit-cost")
+    operation: TransactionOperation
+    unit_cost: float
     quantity: int
 
-class Tax(BaseModel):
+class Tax(NamedTuple):
     """
     A class representing a tax paid on a transaction.
 
