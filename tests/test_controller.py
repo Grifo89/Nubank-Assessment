@@ -14,9 +14,20 @@ class TestController:
     )
     def test_new_buy_price(self, transaction: Transaction, expected: float) -> None:
         """
-        This mocking function tests the computed weighted price for calculating profit.
+        Test function to verify that new_buy_price() function returns the
+        expected weighted average price given a transaction and current quantity and price.
 
         Based of this formula: ((current_quantity * current_weighted_price) + (transaction_quantity * transaction_price))/ (current_quantity + transaction_quantity)
+        
+        Args:
+            transaction (Transaction): A dictionary containing the quantity and unit-cost values for the transaction.
+            expected (float): The expected weighted average price.
+
+        Returns:
+            None
+        
+        Raises:
+            AssertionError: If the actual result of the test does not match the expected result.
         """
         numerator = 0
         current_quantity = 315884.00
@@ -36,6 +47,21 @@ class TestController:
     def test_tax_calculator(
         self, profit: float, operation_amount: float, expected: float
     ) -> None:
+        """
+        Test function to verify that tax_calculator() function returns
+        the expected tax value given a profit, operation amount, and tax rate.
+
+        Args:
+            profit (float): The profit earned from the operation.
+            operation_amount (float): The total amount of money involved in the operation.
+            expected (float): The expected tax value.
+
+        Returns:
+            None
+
+        Raises:
+            AssertionError: If the calculated tax is not equal to the expected value.
+        """
         self.tax_rate = 0.20
         tax = 0
         lost_profit = -5000
@@ -64,6 +90,9 @@ class TestController:
 
         Returns:
             float: The profit of the sell transaction.
+
+        Raises:
+            AssertionError: If the actual result of the test does not match the expected result.
         """
         buy_price = 12
         profit = (transaction["unit-cost"] - buy_price) * transaction["quantity"]

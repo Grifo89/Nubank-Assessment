@@ -37,8 +37,7 @@ class TestIntegration:
         Executes a buy transaction for the asset.
 
         Args:
-            transaction (dict): A dictionary containing the details of the buy transaction,
-            including the quantity and unit cost of the asset.
+            transaction (dict): A dictionary containing the details of the buy transaction, including the quantity and unit cost of the asset.
 
         Returns:
             None.
@@ -53,8 +52,7 @@ class TestIntegration:
         Executes a sell transaction for the asset.
 
         Args:
-            transaction (dict): A dictionary containing the details of the sell transaction,
-            including the quantity and unit cost of the asset.
+            transaction (dict): A dictionary containing the details of the sell transaction, including the quantity and unit cost of the asset.
 
         Returns:
             None.
@@ -72,7 +70,7 @@ class TestIntegration:
 
         Args:
             profit (float): The profit of the sell transaction.
-            operation_amount (float): The total amount of the sell transaction.
+            operation_amount (float): The total amount of the sell  transaction.
 
         Returns:
             float: The tax amount for the sell transaction.
@@ -91,8 +89,7 @@ class TestIntegration:
         Calculates the profit of a sell transaction.
 
         Args:
-            transaction (dict): A dictionary containing the details of the sell transaction,
-            including the quantity and unit cost of the asset.
+            transaction (dict): A dictionary containing the details of the sell transaction, including the quantity and unit cost of the asset.
 
         Returns:
             float: The profit of the sell transaction.
@@ -122,10 +119,13 @@ class TestIntegration:
         Tests the processing of a list of transactions and return the corresponding taxes.
 
         Parameters:
-        transactions (List[Transaction]): A list of transactions to be processed.
+            transactions (List[Transaction]): A list of transactions to be processed.
 
         Returns:
-        List[Tax]: A list of taxes corresponding to the processed transactions.
+            List[Tax]: A list of taxes corresponding to the processed transactions.
+        
+        Raises:
+            AssertionError: If the actual result of the test does not match the expected result.
         """
         for transaction in transactions:
             match transaction["operation"]:
