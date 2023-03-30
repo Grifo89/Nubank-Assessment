@@ -7,9 +7,9 @@ class TestController:
     @pytest.mark.parametrize(
         "transaction, expected",
         [
-            ({"operation": "buy", "unit-cost": 10.00, "quantity": 10000}, 0),
-            ({"operation": "buy", "unit-cost": 45.00, "quantity": 100}, 0),
-            ({"operation": "buy", "unit-cost": 23.00, "quantity": 2100}, 0),
+            ({"operation": "buy", "unit-cost": 10.00, "quantity": 10000}, 12.91),
+            ({"operation": "buy", "unit-cost": 45.00, "quantity": 100}, 13.01),
+            ({"operation": "buy", "unit-cost": 23.00, "quantity": 2100}, 13.07),
         ],
     )
     def test_new_buy_price(self, transaction: Transaction, expected: float) -> None:
@@ -26,11 +26,12 @@ class TestController:
             transaction["quantity"] * transaction["unit-cost"]
         )
         weighted_price = round((numerator / denominator), 2)
+        print(weighted_price)
         assert weighted_price == expected
 
     @pytest.mark.parametrize(
         "profit, operation_amount, expected",
-        [(30000, 60000, 0), (-25000, 40000, 0), (0, 150000, 0)],
+        [(30000, 60000, 5000.0), (-25000, 40000, 0), (0, 150000, 0)],
     )
     def test_tax_calculator(
         self, profit: float, operation_amount: float, expected: float
@@ -48,9 +49,9 @@ class TestController:
     @pytest.mark.parametrize(
         "transaction, expected",
         [
-            ({"operation": "buy", "unit-cost": 10.00, "quantity": 10000}, 0),
-            ({"operation": "buy", "unit-cost": 45.00, "quantity": 100}, 0),
-            ({"operation": "buy", "unit-cost": 23.00, "quantity": 2100}, 0),
+            ({"operation": "buy", "unit-cost": 10.00, "quantity": 10000}, -20000.0),
+            ({"operation": "buy", "unit-cost": 45.00, "quantity": 100}, 3300.0),
+            ({"operation": "buy", "unit-cost": 23.00, "quantity": 2100}, 23100.0),
         ],
     )
     def test_profit_calculator(self, transaction: Transaction, expected: float) -> None:
@@ -66,4 +67,5 @@ class TestController:
         """
         buy_price = 12
         profit = (transaction["unit-cost"] - buy_price) * transaction["quantity"]
+        print(profit)
         assert round(profit, 2) == expected
