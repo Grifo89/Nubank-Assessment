@@ -3,6 +3,8 @@ Capital Gains 🤑 💸 CLI Application
 
 This is a CLI application capable of processing stock operations and calculates the taxes over the transactions. This is an assesment proposed by Nubank. 
 
+This application is built based on a MVC architecture approach. 
+
 ---
 ## Requirements
 
@@ -13,7 +15,7 @@ This application requires `python >= 3.11`
 ## Features
 - Multi-line input.
 - Input redirection using `files.txt`
-
+- MVC architecture approach
 ---
 
 ## Setup
