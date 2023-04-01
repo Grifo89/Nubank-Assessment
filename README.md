@@ -34,7 +34,7 @@ Once you have the needed setup, you can start using the application.
 
 Being at the root directory, the application runs typing the following command `python capital_gains`, after typing the command there are two options on wich you can choose:
 
-1. You can press Enter and get into the console interactive mode, where you can pass in the stock operation, which is made up of many transaction. When you finish to do it press `Enter` and `Ctrl + d` to execute the progam. 
+1. You can press Enter and get into the console interactive mode, where you can pass in the stock operation, which is made up of many transaction. When you finish to do it press `Enter` and `Ctrl + d` to execute the program. 
 
 2. You can, after typing the command, redirect a file to the application as an input using **input redirection** `python capital_gains < test.txt`
 

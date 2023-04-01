@@ -29,7 +29,6 @@ class TransactionController:
         Returns:
             None.
         """
-        numerator = 0
         current_quantity = self.repository.get_current_quantity()
         weighted_price = self.repository.get_current_buy_price()
         denominator = current_quantity + transaction["quantity"]
