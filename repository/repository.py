@@ -54,7 +54,13 @@ class TransactionRepository:
         Returns:
         List[Tax]: A list of taxes paid on transactions.
         """
-        return [{"tax": x} for x in self.taxes]
+        tmp = []
+        for tax in self.taxes:
+            if type(tax) == str:
+                tmp.append({"error": tax})
+            else:
+                tmp.append({"tax": tax})
+        return tmp
 
     def set_current_buy_price(self, value: float) -> None:
         """

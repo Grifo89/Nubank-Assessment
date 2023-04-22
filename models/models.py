@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import NamedTuple
+from typing import NamedTuple, Any
 
 
 class TransactionOperation(Enum):
@@ -30,4 +30,4 @@ class Tax(NamedTuple):
     tax (float): The amount of tax paid on the transaction.
     """
 
-    tax: float
+    tax: Any

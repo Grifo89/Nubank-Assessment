@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Any
 
 import pytest
 
@@ -9,7 +9,6 @@ from models.models import Transaction, Tax
 class TestIntegration:
     tax_rate = 0.20
     repository = TransactionRepository()
-
 
     def _new_buy_price(self, transaction: Transaction) -> None:
         """
@@ -45,7 +44,7 @@ class TestIntegration:
         quantity = transaction["quantity"]
         self._new_buy_price(transaction)
         self.repository.set_current_quantity(quantity)
-        self.repository.set_taxes(0)
+        return 0
 
     def _sell(self, transaction: Transaction) -> None:
         """
@@ -62,7 +61,7 @@ class TestIntegration:
         self.repository.set_current_quantity(-quantity)
         profit = self._profit_calculator(transaction)
         tax = self._tax_calculator(profit, operation_amount)
-        self.repository.set_taxes(tax)
+        return tax
 
     def _tax_calculator(self, profit: float, operation_amount: float) -> float:
         """
@@ -98,23 +97,33 @@ class TestIntegration:
         profit = (transaction["unit-cost"] - buy_price) * transaction["quantity"]
         return round(profit, 2)
 
-    @pytest.mark.parametrize('transactions, expected',
-                                [
-                                    (
-                                        [{"operation":"buy", "unit-cost": 5000.00, "quantity": 10},
-                                        {"operation":"sell", "unit-cost": 4000.00, "quantity": 5},
-                                        {"operation":"buy", "unit-cost": 15000.00, "quantity": 5},
-                                        {"operation":"buy", "unit-cost": 4000.00, "quantity": 2},
-                                        {"operation":"buy", "unit-cost": 23000.00, "quantity": 2},
-                                        {"operation":"sell", "unit-cost": 20000.00, "quantity": 1},
-                                        {"operation":"sell", "unit-cost": 12000.00, "quantity": 10},
-                                        {"operation":"sell", "unit-cost": 15000.00, "quantity": 3}],
-                                        [{"tax":0},{"tax":0},{"tax":0},{"tax":0},{"tax":0},{"tax":0},{"tax":2000},{"tax":2400}]
-                                    )
-                                ]
-                             )
-    def test_processing_transactions(self, transactions: List[Transaction],
-                                expected: List[Tax]) -> None:
+    def _validator(self, transaction):
+        quantity = transaction["quantity"]
+        current_quantity = self.repository.get_current_quantity()
+        if quantity > current_quantity:
+            return "Can't sell more stocks than you have"
+        return None
+
+    @pytest.mark.parametrize(
+        "transactions, expected",
+        [
+            (
+                [
+                    {"operation": "buy", "unit-cost": 10, "quantity": 10000},
+                    {"operation": "sell", "unit-cost": 20, "quantity": 11000},
+                    {"operation": "sell", "unit-cost": 20, "quantity": 5000},
+                ],
+                [
+                    {"tax": 0},
+                    {"error": "Can't sell more stocks than you have"},
+                    {"tax": 10000},
+                ],
+            )
+        ],
+    )
+    def test_processing_transactions(
+        self, transactions: List[Transaction], expected: List[Tax]
+    ) -> None:
         """
         Tests the processing of a list of transactions and return the corresponding taxes.
 
@@ -123,17 +132,31 @@ class TestIntegration:
 
         Returns:
             List[Tax]: A list of taxes corresponding to the processed transactions.
-        
+
         Raises:
             AssertionError: If the actual result of the test does not match the expected result.
         """
+        taxes: List[Any] = []
+        tmp: List[Any] = []
         for transaction in transactions:
             match transaction["operation"]:
                 case "buy":
-                    self._buy(transaction)
+                    tax = self._buy(transaction)
+                    tmp.append(tax)
                 case "sell":
-                    self._sell(transaction)
+                    validator = self._validator(transaction)
+                    if validator != None:
+                        tmp.append(validator)
+                    else:
+                        tax = self._sell(transaction)
+                        print(tax)
+                        tmp.append(tax)
                 case _:
                     raise Exception("Invalid transation")
-        taxes = self.repository.get_taxes()
+
+        for tax in tmp:
+            if type(tax) == str:
+                taxes.append({"error": tax})
+            else:
+                taxes.append({"tax": tax})
         assert taxes == expected

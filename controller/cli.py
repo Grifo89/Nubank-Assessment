@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Any
 
 from repository.repository import TransactionRepository
 from models.models import Transaction, Tax
@@ -52,7 +52,7 @@ class TransactionController:
         quantity = transaction["quantity"]
         self._new_buy_price(transaction)
         self.repository.set_current_quantity(quantity)
-        self.repository.set_taxes(0)
+        return 0
 
     def _sell(self, transaction: Transaction) -> None:
         """
@@ -70,7 +70,14 @@ class TransactionController:
         self.repository.set_current_quantity(-quantity)
         profit = self._profit_calculator(transaction)
         tax = self._tax_calculator(profit, operation_amount)
-        self.repository.set_taxes(tax)
+        return tax
+
+    def _validator(self, transaction: Transaction):
+        quantity = transaction["quantity"]
+        current_quantity = self.repository.get_current_quantity()
+        if quantity > current_quantity:
+            return "Can't sell more stocks than you have"
+        return None
 
     def _tax_calculator(self, profit: float, operation_amount: float) -> float:
         """
@@ -117,13 +124,26 @@ class TransactionController:
         Returns:
         List[Tax]: A list of taxes corresponding to the processed transactions.
         """
+        taxes: List[Any] = []
+        tmp: List[Any] = []
         for transaction in transactions:
             match transaction["operation"]:
                 case "buy":
-                    self._buy(transaction)
+                    tax = self._buy(transaction)
+                    tmp.append(tax)
                 case "sell":
-                    self._sell(transaction)
+                    validator = self._validator(transaction)
+                    if validator:
+                        tmp.append(validator)
+                    else:
+                        tax = self._sell(transaction)
+                        tmp.append(tax)
                 case _:
                     raise Exception("Invalid transation")
-        taxes = self.repository.get_taxes()
-        print(taxes, "\n")
+
+        for tax in tmp:
+            if type(tax) == str:
+                taxes.append({"error": tax})
+            else:
+                taxes.append({"tax": tax})
+        print("\n", taxes, "\n")

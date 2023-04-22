@@ -18,14 +18,14 @@ class TestController:
         expected weighted average price given a transaction and current quantity and price.
 
         Based of this formula: ((current_quantity * current_weighted_price) + (transaction_quantity * transaction_price))/ (current_quantity + transaction_quantity)
-        
+
         Args:
             transaction (Transaction): A dictionary containing the quantity and unit-cost values for the transaction.
             expected (float): The expected weighted average price.
 
         Returns:
             None
-        
+
         Raises:
             AssertionError: If the actual result of the test does not match the expected result.
         """

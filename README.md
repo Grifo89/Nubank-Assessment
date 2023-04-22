@@ -57,4 +57,4 @@ If you would like to run the application tests, at the root directory run the fo
 ---
 ## Author
 
-🤖 A new Nubanker 💪🏻
+🤖 Christian Miño 💪🏻

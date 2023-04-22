@@ -15,6 +15,7 @@ class TestRepository:
     test_current_buy_price: Test the set and get methods of the current buy price.
     test_lost_profit: Test the set and get methods of the lost profit.
     """
+
     repository = TransactionRepository()
 
     def test_current_quantity(self):
