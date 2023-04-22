@@ -1,7 +1,7 @@
 Capital Gains 🤑 💸 CLI Application
 ============
 
-This is a CLI application capable of processing stock operations and calculates the taxes over the transactions. This is an assesment proposed by Nubank. 
+This is a CLI application capable of processing stock operations and calculates the taxes over the transactions. This is an assesment proposed by Nubank. [This is the assessment sheet](assessment.pdf).
 
 This application is built based on a MVC architecture approach. 
 
